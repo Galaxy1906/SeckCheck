@@ -1,6 +1,8 @@
 # SecCheck 🔐
 
 ![PHP](https://img.shields.io/badge/PHP-8.1%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
+![XAMPP](https://img.shields.io/badge/XAMPP-F37623?style=for-the-badge&logo=xampp&logoColor=white)
 ![SOLID](https://img.shields.io/badge/Architecture-SOLID-success?style=for-the-badge)
 ![PHPUnit](https://img.shields.io/badge/Tested%20With-PHPUnit-366488?style=for-the-badge&logo=php&logoColor=white)
 
@@ -8,43 +10,45 @@
 
 # 📖 Descrição
 
-O **SecCheck** é uma biblioteca *Enterprise-Grade* desenvolvida em **PHP 8.1+** para análise avançada de força de senhas, cálculo de entropia e estimativa de resistência contra ataques de força bruta.
+O **SecCheck** é uma aplicação web e biblioteca **Enterprise-Grade** desenvolvida em **PHP 8.1+** para análise avançada de força de senhas, cálculo de entropia e estimativa de resistência contra ataques de força bruta.
 
-O projeto foi desenvolvido utilizando conceitos modernos de engenharia de software, incluindo:
+Além do motor de análise (desenvolvido com princípios **SOLID**, **Value Objects** e **Tipagem Estrita**), o projeto conta com uma **API REST**, uma **Interface de Usuário (Frontend)** interativa e um **Painel Administrativo** para auditoria de testes realizados.
 
-- SOLID
-- Value Objects
-- Dependency Injection
-- Strict Types
-- Arquitetura orientada a domínio
-- Testes automatizados com PHPUnit
-
-Além do cálculo tradicional de entropia, o SecCheck aplica heurísticas inteligentes para identificar padrões inseguros e estimar a força real da senha em cenários modernos de ataque.
-
-Este projeto foi desenvolvido como parte de um trabalho acadêmico/TCC do curso de **Análise e Desenvolvimento de Sistemas**.
+Este projeto foi desenvolvido como parte de um trabalho acadêmico (**TCC**) do curso de **Análise e Desenvolvimento de Sistemas**.
 
 ---
 
-# 🚀 Funcionalidades Principais
+# 🚀 Funcionalidades
 
-- ✅ Cálculo de entropia bruta da senha
-- ✅ Cálculo de entropia efetiva com penalidades heurísticas
-- ✅ Detecção automática do charset utilizado
-- ✅ Suporte completo a Unicode e caracteres multibyte
-- ✅ Identificação de padrões de teclado
-  - `qwerty`
-  - `123456`
-  - sequências lineares
-- ✅ Detecção de repetições de caracteres
-- ✅ Detecção de palavras de dicionário
-- ✅ Estimativa de tempo de quebra:
+## 🔍 Núcleo de Análise (Core)
+
+- ✅ Cálculo de **entropia bruta e efetiva** com penalidades heurísticas.
+- ✅ Detecção automática do **charset utilizado** (incluindo suporte a Unicode/multibyte).
+- ✅ Identificação de padrões inseguros:
+  - Sequências de teclado
+  - Repetições
+  - Palavras de dicionário
+- ✅ Estimativa de tempo de quebra para cenários:
   - Online Attack
   - Offline Slow Hash
   - Offline Fast Hash
-- ✅ Arquitetura desacoplada e extensível
-- ✅ Tipagem estrita (`declare(strict_types=1)`)
-- ✅ Cobertura de testes com PHPUnit
-- ✅ Código orientado a boas práticas de segurança
+
+---
+
+## 🖥️ Aplicação Web & Painel Administrativo
+
+- 🌙 **Frontend Interativo**  
+  Interface moderna e responsiva em modo dark para testes de senha em tempo real via API.
+
+- 📊 **Painel Administrativo**  
+  Dashboard seguro para visualização de:
+  - Métricas de uso
+  - Scores médios
+  - Histórico de auditorias
+
+- 💾 **Persistência Segura**  
+  Registro apenas dos **metadados das análises**.  
+  **As senhas NÃO são armazenadas.**
 
 ---
 
@@ -53,85 +57,162 @@ Este projeto foi desenvolvido como parte de um trabalho acadêmico/TCC do curso 
 ```text
 SecCheck/
 │
-├── src/
-│   └── SecCheck.php
-│
-├── tests/
-│   ├── EntropyCalculatorTest.php
-│   ├── PasswordAnalyzerTest.php
-│   └── HeuristicsTest.php
-│
-├── vendor/
+├── config/                # Configurações de Banco de Dados (PDO)
+├── database/              # Schemas SQL, Migrations e Seeds
+├── public/                # Raiz do servidor web (Frontend)
+│   ├── admin/             # Painel Administrativo
+│   ├── api/               # Endpoints da API
+│   │   └── validar-senha.php
+│   └── assets/            # CSS, JS e imagens
+├── src/                   # Núcleo da biblioteca (SecCheck.php)
+├── tests/                 # Testes unitários
+├── vendor/                # Dependências do Composer
 ├── composer.json
-├── phpunit.xml
 └── README.md
 ```
 
 ---
 
-# ⚙️ Instalação e Como Usar
+# ⚙️ Guia de Instalação para XAMPP
 
-## Requisitos
-
-- PHP 8.1+
-- Composer
-- Extensão `mbstring`
+Siga os passos abaixo para rodar o projeto localmente utilizando o **XAMPP**.
 
 ---
 
-## Instalação
+## 1️⃣ Pré-requisitos
+
+Certifique-se de possuir:
+
+- PHP **8.1 ou superior**
+- Apache ativo
+- MySQL/MariaDB ativo
+- XAMPP instalado
+
+Inicie os módulos **Apache** e **MySQL** no painel de controle do XAMPP.
+
+---
+
+## 2️⃣ Posicionando os Arquivos
+
+Clone ou extraia o projeto para a pasta **htdocs**:
+
+```bash
+C:\xampp\htdocs\seccheck
+```
+
+---
+
+## 3️⃣ Configuração do Banco de Dados
+
+Abra o **phpMyAdmin**:
+
+```text
+http://localhost/phpmyadmin
+```
+
+Vá em **Importar** e execute os arquivos SQL **nesta ordem**:
+
+### 1. Criar banco e tabelas
+
+```text
+database/schemas/criar_tabelas.sql
+```
+
+### 2. Aplicar migrações
+
+```text
+database/migrations/002_auditorias_score_0_100.sql
+```
+
+### 3. Criar usuário administrador padrão
+
+```text
+database/seeds/admin_inicial.sql
+```
+
+---
+
+## 4️⃣ Configurando a conexão PHP
+
+Acesse:
+
+```text
+config/
+```
+
+Duplique:
+
+```text
+database.example.php
+```
+
+Renomeie para:
+
+```text
+database.php
+```
+
+Edite com suas credenciais:
+
+```php
+<?php
+
+return [
+    'dsn'  => 'mysql:host=127.0.0.1;port=3306;dbname=seccheck;charset=utf8mb4',
+    'user' => 'root',
+    'pass' => '', // Senha em branco no XAMPP padrão
+];
+```
+
+---
+
+# 🌐 Acessando a Aplicação
+
+Com Apache e MySQL rodando:
+
+## 🔒 Verificador Público
+
+```text
+http://localhost/seccheck/public/
+```
+
+---
+
+## ⚙️ Painel Administrativo
+
+```text
+http://localhost/seccheck/public/admin/
+```
+
+### Credenciais padrão
+
+**Usuário:**
+
+```text
+admin
+```
+
+**Senha:**
+
+```text
+password
+```
+
+> ⚠️ **Importante:** altere a senha padrão em ambientes de produção.
+
+---
+
+# 🧪 Executando os Testes
+
+Caso tenha o **Composer** instalado:
+
+## Instalar dependências
 
 ```bash
 composer install
 ```
 
----
-
-## Exemplo de Uso
-
-```php
-<?php
-
-declare(strict_types=1);
-
-require_once __DIR__ . '/vendor/autoload.php';
-
-use SecCheck\Factory\SecCheckFactory;
-
-$secCheck = SecCheckFactory::create();
-
-$result = $secCheck->analyze('MinhaSenha@2026');
-
-echo "Senha: {$result->password}\n";
-echo "Charset Detectado: {$result->charset}\n";
-echo "Entropia Bruta: {$result->rawEntropy} bits\n";
-echo "Entropia Efetiva: {$result->effectiveEntropy} bits\n";
-echo "Força: {$result->strength}\n";
-
-echo "\n=== Tempo Estimado de Quebra ===\n";
-
-echo "Online Attack: {$result->crackTime->online}\n";
-echo "Offline Slow Hash: {$result->crackTime->offlineSlow}\n";
-echo "Offline Fast Hash: {$result->crackTime->offlineFast}\n";
-```
-
----
-
-## ⚠️ Aviso Importante
-
-> Esta biblioteca foi projetada para ser utilizada como uma aplicação PHP estruturada.
->
-> **Não é recomendado copiar e colar o código diretamente dentro do arquivo `functions.php` do WordPress ou em ambientes sem autoload/Composer.**
->
-> Utilize corretamente o autoload PSR-4 e a estrutura orientada a objetos do projeto.
-
----
-
-# 🧪 Testes
-
-O projeto possui uma suíte completa de testes automatizados utilizando PHPUnit.
-
-## Rodar todos os testes
+## Rodar PHPUnit
 
 ```bash
 vendor/bin/phpunit
@@ -139,55 +220,82 @@ vendor/bin/phpunit
 
 ---
 
-## Rodar com cobertura
+# 🔐 Aviso de Segurança
 
-```bash
-vendor/bin/phpunit --coverage-text
+O **SecCheck** foi projetado para **não armazenar senhas reais**.
+
+Somente os seguintes metadados podem ser registrados:
+
+- Entropia
+- Score
+- Tamanho da senha
+- Complexidade
+- Timestamp da análise
+
+---
+
+## Recomendações para Produção
+
+### Nunca exponha estas pastas:
+
+```text
+/config
+/database
+```
+
+Configure o servidor web para apontar diretamente para:
+
+```text
+/public
 ```
 
 ---
 
-# 🔒 Segurança
+### Altere imediatamente:
 
-O **SecCheck** apenas realiza análise de força e entropia da senha em memória.
+- Credenciais do banco de dados
+- Senha do administrador padrão
 
-A biblioteca:
+---
 
-- ❌ NÃO armazena senhas
-- ❌ NÃO criptografa senhas automaticamente
-- ❌ NÃO substitui mecanismos reais de autenticação
-
-Para armazenamento seguro de senhas, utilize sempre:
+### Para armazenar senhas reais em outros sistemas, use:
 
 ```php
-password_hash($password, PASSWORD_ARGON2ID);
+password_hash($password, PASSWORD_ARGON2ID)
 ```
 
-Também é recomendado:
+---
 
-- Utilizar salts automáticos do PHP
-- Configurar rate limiting
-- Implementar MFA/2FA
-- Seguir as recomendações do NIST e OWASP
+# 📚 Referências Acadêmicas
+
+- **NIST SP 800-63B** — Digital Identity Guidelines
+- **OWASP Password Storage Cheat Sheet**
+- **Claude Shannon — Entropy Theory**
+- **Dropbox zxcvbn Password Strength Estimator**
 
 ---
 
-# 📚 Referências
+# 🛠️ Stack Tecnológica
 
-- NIST SP 800-63B — Digital Identity Guidelines
-- OWASP Password Storage Cheat Sheet
-- Dropbox zxcvbn Password Strength Estimator
-- Shannon Entropy Theory
-- OWASP Authentication Cheat Sheet
-
----
-
-# 👨‍💻 Autor
-
-Projeto desenvolvido para fins acadêmicos/TCC no curso de **Análise e Desenvolvimento de Sistemas**.
+- PHP 8.1+
+- MySQL / MariaDB
+- PDO
+- HTML/CSS/JavaScript
+- XAMPP
+- PHPUnit
+- Arquitetura SOLID
+- Value Objects
+- Tipagem Estrita
 
 ---
 
 # 📄 Licença
 
-Este projeto é disponibilizado apenas para fins educacionais e acadêmicos.
+Projeto desenvolvido para fins **acadêmicos e educacionais** como parte do **Trabalho de Conclusão de Curso (TCC)** em **Análise e Desenvolvimento de Sistemas**.
+
+---
+
+# 👨‍💻 Autor
+
+**Pedro Mauro**  
+Desenvolvedor Backend PHP | Infraestrutura & Segurança | ADS
