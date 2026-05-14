@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SecCheck — Análise de força de senha</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-dark border-bottom border-secondary border-opacity-25 shadow-sm">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1 fw-bold tracking-tight">
+                <i class="bi bi-shield-lock-fill text-info me-2"></i>SecCheck
+            </span>
+            <span class="navbar-text small text-secondary">Laboratório de entropia &amp; simulação de ataque</span>
+        </div>
+    </nav>
+
+    <main class="container py-5 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card sec-card shadow-lg border-0 mb-4">
+                    <div class="card-body p-4 p-md-5">
+                        <h2 class="h4 mb-2 text-info">Verificador de senha</h2>
+                        <p class="text-secondary small mb-4">
+                            A senha é enviada apenas para análise em memória no servidor e <strong>não</strong> é gravada em banco de dados.
+                        </p>
+
+                        <form id="password-form" autocomplete="off">
+                            <label for="password-input" class="form-label text-uppercase small text-secondary fw-semibold">Senha</label>
+                            <div class="input-group input-group-lg mb-3">
+                                <input type="password" class="form-control font-monospace" id="password-input" name="password"
+                                       placeholder="Digite a senha para testar" minlength="0">
+                                <button class="btn btn-outline-info" type="button" id="toggle-visibility" title="Mostrar ou ocultar">
+                                    <i class="bi bi-eye" id="toggle-visibility-icon"></i>
+                                </button>
+                                <button class="btn btn-info text-dark fw-semibold px-4" type="submit" id="submit-btn">
+                                    Testar Segurança
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="feedback-area" class="d-none">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="small text-secondary">Score (0–100)</span>
+                                    <span class="small font-monospace" id="score-label">0</span>
+                                </div>
+                                <div class="progress sec-progress" style="height: 1.25rem;">
+                                    <div id="score-bar" class="progress-bar" role="progressbar"
+                                         style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <div class="sec-stat p-3 rounded-3 h-100">
+                                        <div class="text-secondary small text-uppercase">Severidade</div>
+                                        <div id="severity-text" class="fs-5 fw-semibold mt-1">—</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="sec-stat p-3 rounded-3 h-100">
+                                        <div class="text-secondary small text-uppercase">Entropia efetiva</div>
+                                        <div id="entropy-text" class="fs-5 font-monospace mt-1">—</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sec-stat p-3 rounded-3 mb-3">
+                                <div class="text-secondary small text-uppercase mb-2">Estimativa de tempo (cenários)</div>
+                                <div id="time-estimate" class="small font-monospace text-secondary">—</div>
+                            </div>
+
+                            <div>
+                                <div class="text-secondary small text-uppercase mb-2">Recomendações</div>
+                                <ul id="recommendation-list" class="list-unstyled mb-0 small"></ul>
+                            </div>
+
+                            <p id="security-note" class="text-muted small mt-4 mb-0 d-none"></p>
+                        </div>
+
+                        <div id="error-alert" class="alert alert-danger mt-4 d-none" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-top border-secondary border-opacity-25 py-3 mt-auto">
+        <div class="container text-center small text-secondary">
+            SecCheck · Uso acadêmico · Não substitui auditoria profissional
+            <span class="mx-2">·</span>
+            <a href="admin/login.php" class="link-info text-decoration-none">Painel admin</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
